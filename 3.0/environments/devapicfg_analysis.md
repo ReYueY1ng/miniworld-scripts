@@ -25,7 +25,7 @@
 | `BoardCast` | 8 | 广播给所有客户端 |
 | `Mod` | 9 | Mod 专属调用路径 |
 
-`ScriptEnvMgr:LoadServicesApi()`（scriptenvmgr.lua:340-537）根据此类型决定实际调用方式：
+`ScriptEnvMgr:LoadServicesApi()`（scriptenvmgr.lua:289-556）根据此类型决定实际调用方式：
 - `Normal` → `v(service, ...)` 直接调用
 - `Sync` → `SyncMgr:Sync(msgid, ...)`
 - `SyncPack` → `SyncMgr:SyncPack(msgid, ...)`
@@ -34,11 +34,15 @@
 - `BoardCast` → `SyncMgr:BoardCast(msgid, ...)`
 - `HostAndClient` → `v(service, true, ...)` caller 注入 `true`；receiver 注入 `false`
 - `ReportHost` → `SyncMgr:ReportEventToHost()` 上报，Host 收到时注入 `playerid`
-- `Mod` → `v(service, ...)` 直接调用
+- `Mod` → `v(service, ...)` 直接调用（并标记 `modInfoTable[k] = true`）
+
+> ⚠️ `NoBlock`（2）在枚举中仍保留，但 `LoadServicesApi` 的调用分支**没有为其实现**——配置了 `NoBlock` 的方法会落入 `else` 分支且不匹配任何 `msgid` 类型，最终**不会被暴露**。属于已废弃的枚举值。
 
 #### 额外参数注入
 
 部分 MType 在调用 Service 方法时会**注入额外参数**，Service 方法签名需对应调整：
+
+> 注：datasycmgr.lua 实际位于 `luascript/ugc/framework/mgr/datasycmgr.lua`（框架层 mgr 目录，非 logic/）。
 
 | MType | 注入参数 | Service 方法签名 | 说明 |
 |-------|---------|-----------------|------|
@@ -83,7 +87,7 @@ pcall(Service[service][method], Service[service], runcallback, ...)
 
 ### 频率限制：Uin_TimeLimit / TimeLimit
 
-`ScriptEnvMgr:CheckLimit()`（scriptenvmgr.lua:212-283）：
+`ScriptEnvMgr:CheckLimit()`（scriptenvmgr.lua:216-287）：
 
 ```lua
 -- Uin_TimeLimit: 按玩家 UIN 限频
@@ -104,22 +108,38 @@ end
 
 ### 白名单鉴权：WhiteList
 
-`ScriptEnvMgr:CreateModEvnService()`（scriptenvmgr.lua:722-742）：
+`ScriptEnvMgr:CreateModEvnService()`（scriptenvmgr.lua:718-773）：
 
 ```lua
-if self.limitcfg[limitkey] and self.limitcfg[limitkey][DevApiRType.WhiteList] then
-    local ns = self.limitcfg[limitkey][DevApiRType.WhiteList]
-    ret = check_apiid_ver_conditions_in_cloudsever(ns_version[ns], false, moddesc.iAuthorUin)
-    blimit = not ret
+if not isOfficial then  -- 官方环境（isOfficial=true）跳过全部 WhiteList 校验
+    limitkey = servicename and servicename .. "." .. key or key
+
+    if self.limitcfg[limitkey] and self.limitcfg[limitkey][DevApiRType.WhiteList] then
+        local ns = self.limitcfg[limitkey][DevApiRType.WhiteList]
+
+        if modId ~= localMap then  -- 第三方 Mod：取作者 UIN 校验
+            local moddesc = ModPackMgr and ModPackMgr:GetModDescByUUID(modId, true)
+
+            if moddesc then
+                local ret = check_apiid_ver_conditions_in_cloudsever(ns_version[ns], false, moddesc.iAuthorUin)
+                blimit = not ret
+            else
+                blimit = true  -- 找不到 mod 描述 → 直接拒绝
+            end
+        else  -- localMap（编辑器/本地地图环境）：不传 UIN 校验
+            local ret = check_apiid_ver_conditions_in_cloudsever(ns_version[ns], false)
+            blimit = not ret
+        end
+    end
 end
--- blimit=true 时替换为: ShowGameTips("权限不足") return false
+-- blimit=true 时方法被替换为: ShowGameTips("权限不足 " .. limitkey) return false
 ```
 
 `ns_version` 是从云服务下载的配置表（对应 `limits.txt` 的数据），`ns` 是 WhiteList 名称（如 `"LuaApi3_InternalApi"`）。
 
 ### 禁用方法：dismethods
 
-直接排除，**对第三方完全不可见**（scriptenvmgr.lua:328-337）：
+直接排除，**对第三方完全不可见**（scriptenvmgr.lua:332-342）：
 
 ```lua
 if cfg.dismethods then
@@ -134,7 +154,7 @@ end
 
 ## 三、check_apiid_ver_conditions_in_cloudsever 鉴权逻辑
 
-定义于 `luascript/ugc/logic/gameglobal.lua:262-528`。
+定义于 `luascript/ugc/logic/gameglobal.lua:296-562`。
 
 ```lua
 function check_apiid_ver_conditions_in_cloudsever(condition_configs, default_, taguin, mapid)
@@ -143,16 +163,19 @@ function check_apiid_ver_conditions_in_cloudsever(condition_configs, default_, t
         -- 2. device_ids：命中 return true，不命中继续
         -- 3. uin_list：不在列表 return false，在列表继续；无此字段则跳过
         -- 4. Map_list：不在列表 return false，在列表继续
-        -- 5. creator_limit：不满足 return false
-        -- 6. apiids：当前渠道不在列表 return false
-        -- 7. apiids_no：当前渠道在列表 return false（"9999" 仅屏蔽 apiid=9999）
-        -- 8. version_min：版本过低 return false
-        -- 9. version_max：版本过高 return false
-        -- 10. lang / langs：语言不匹配 return false
-        -- 11. start_time / end_time：不在时间窗口 return false
-        -- 12. countrys / noCountrys：国家限制
-        -- 13. userPkgs / noUserPkgs：用户包限制
-        -- 14. isExtLink：外部链接限制
+        -- 5. creator_limit：不满足 return false（海外环境直接 false；需 idType==2 的创作者）
+        -- 6. versions_yes：命中版本列表且 apiids 通过 → 提前 return true
+        -- 7. versions_no：命中版本列表且 apiids 通过 → 提前 return false
+        -- 8. apiids：当前渠道不在列表 return false
+        -- 9. apiids_no：当前渠道在列表 return false（"9999" 仅屏蔽 apiid=9999）
+        -- 10. version_min：版本过低 return false
+        -- 11. version_max：版本过高 return false
+        -- 12. lang / langs：语言不匹配 return false
+        -- 13. start_time / end_time：不在时间窗口 return false
+        -- 14. close_start_time / close_end_time：处于停机维护窗口 return false
+        -- 15. countrys / noCountrys：国家限制
+        -- 16. userPkgs / noUserPkgs：用户包限制
+        -- 17. isExtLink：外部链接限制（extLinksFlag 或 reviewForbidden 任一开启均 return false）
         return true  -- 所有检查均未 return false → 放行
     elseif default_ then
         return true
@@ -165,6 +188,7 @@ end
 **关键理解**：
 - `condition_configs` 存在 + 内部没有一个检查触发 `return false` → 最终 `return true`
 - `super_uin_list` 只是**快速通道**，不命中不拒绝，继续后续检查
+- `versions_yes` / `versions_no` 是**提前返回**开关：命中版本且 apiids 通过即跳过其余所有检查直接 return
 - `uin_list` 是**硬门控**，不在列表中直接 `return false`
 - `apiids_no = "9999"` 只屏蔽 apiid 恰好为 9999 的渠道，不影响正常用户
 - `condition_configs` 为 nil（ns_version 中无此 key）→ 返回 `default_`（false）
@@ -172,6 +196,8 @@ end
 ---
 
 ## 四、各 WhiteList API 可用性
+
+> ⚠️ **数据来源说明**：`ns_version` 的实际内容由云端下发——客户端在 `miniui/module/commoncomp/cfgdownload/cfgdownloadpluglaunch.lua:380`（`WWW_file_download("version")` 回调）、服务端在 `luascript/cloudserverinitconst.lua:91` 填充，**本 dump 中不包含该数据**。下表「配置内容」列的 uin_list 数量、`apiids_no`、`super_uin_list`、`creator_level` 等来自运行期快照，需以当前云端配置为准；方法→WhiteList key 的映射则来自 devapicfg.lua，可验证。
 
 ### ✅ 对所有 Mod 可用
 
@@ -190,7 +216,7 @@ end
 
 | ns_version Key | DevApiCfg 中的 API | uin_list 概况 |
 |---|---|---|
-| `LuaApi3_InternalApi` | Data.DoPackBluePrint, Block.CreateObsBluePrint, Block.PlaceBluePrint, Block.UnbindBluePrintRegion, Block.SaveBluePrintRegionData, Block.BluePrintSaveAsNewId, Block.BluePrintSetUploadInteral, Block.DeleteBluePrint, Block.GetBluePrintBlockInfo, Block.CaptureAndUploadScreenshot, Block.LoadObsBluePrint, Block.UnloadObsBluePrint, Block.StopPlaceObsBluePrint, Block.GetObsBluePrintStatus, Block.GetObsBluePrintPos, Item.CreateItemInstInBackpack, Item.SetObjData, Item.GetObjData, Item.GetItemModelComp, Item.GetObjDataByGrid, Item.SetObjDataByGrid, Player.ChangeViewModeForMod, Player.HasHandheldGun, Player.GunGetMagazine, Player.SetCrawl, Player.AddMagazine, Player.GetVisibleRange, Player.SetVisibleRange, Monster.SetPersistance, Backpack.GetGridGunInfo, Listen.SetBlockAll, OfficeUtils.GetActivateProgress, OfficeUtils.SendClientReportEvent, CustomUI.SetUrlIcon | 16 个 UIN |
+| `LuaApi3_InternalApi` | Data.DoPackBluePrint, Item.CreateItemInstInBackpack, Item.SetObjData, Item.GetObjData, Item.GetItemModelComp, Item.GetObjDataByGrid, Item.SetObjDataByGrid, Item.LevelUpEquipOrGunForPlayer, Item.FreshPowerEquipOrGunForPlayer, Item.EmpowerEquipOrGunForPlayer, Block.CreateObsBluePrint, Block.PlaceBluePrint, Block.UnbindBluePrintRegion, Block.SaveBluePrintRegionData, Block.BluePrintSaveAsNewId, Block.BluePrintSetUploadInteral, Block.DeleteBluePrint, Block.GetBluePrintBlockInfo, Block.CaptureAndUploadScreenshot, Block.LoadObsBluePrint, Block.UnloadObsBluePrint, Block.StopPlaceObsBluePrint, Block.GetObsBluePrintStatus, Block.GetObsBluePrintPos, Listen.SetBlockAll, CustomUI.SetUrlIcon, Player.ChangeViewModeForMod, Player.SetCrawl, Player.HasHandheldGun, Player.GunGetMagazine, Player.AddMagazine, Player.GetVisibleRange, Player.SetVisibleRange, World.FindNearActorListByObjType, OfficeUtils.GetActivateProgress, OfficeUtils.GetActivateReward, OfficeUtils.SendClientReportEvent, Actor.WhitList_StopSkill, Monster.SetPersistance, Backpack.GetGridGunInfo | 16 个 UIN |
 | `LuaApi3_Item_GetGunBaseDesc` | Item.GetGunBaseDesc | 8 个 UIN |
 | `LuaApi3_Item_CreateBindItemInBackpack` | Item.CreateBindItemInBackpack | 5 个 UIN |
 | `LuaApi3_CustomUI_SetSysSettingBtnVisible` | CustomUI.SetSysSettingBtnVisible | 5 个 UIN |
@@ -209,7 +235,9 @@ end
 | `trigger_api_SendGiftsToFriends` | Player.OpenShopGiveGiftView, Player.OpenFriendChatPage | 6 个 UIN |
 | `trigger_api_UploadActData` | OfficeUtils.ReportActivateDataForUin | 5 个 UIN |
 | `trigger_api3_MapTagTransfer` | CloudSever.TransmitToCategoryRoom, CloudSever.TransmitToCurMapCategoryRoom, CloudSever.GetRoomCategory, CloudSever.SetRoomCategory, Trigger.TransmitToCategoryRoom | 23 个 UIN |
-| `trigger_api_MapTagTransfer` | 同上（另一处引用） | 36 个 UIN |
+| `trigger_api_ReportOfficeActivateData` | OfficeUtils.ReportOfficeActivateData | uin_list（数量以云端配置为准） |
+
+> 注：旧 key `trigger_api_MapTagTransfer`（不带 3）已不存在，当前统一使用 `trigger_api3_MapTagTransfer`（devapicfg.lua:1614/1622/1629/1637/1787 共 5 处引用）。
 
 ### ❌ ns_version 中不存在
 
@@ -227,7 +255,7 @@ end
 
 这是**白名单**，决定虚拟对象（`virObj`）暴露哪些方法给沙盒脚本。**不在列表中的方法不会出现在虚拟对象上**。
 
-`gameobject.lua:2927-2937` / `worldobject.lua:100-110` / `blockobject.lua:594-604` 中的加载逻辑：
+`gameobject.lua:2901-2911` / `worldobject.lua:82-92` / `blockobject.lua:605-615` 中的加载逻辑：
 
 ```lua
 local list = DevApiCfg.gameObject  -- 白名单列表
@@ -241,13 +269,15 @@ for i = 1, #list do
 end
 ```
 
-不在列表中的方法（如 `AddTriggerEvent` 被替换为 `TipsFunction`）对 Mod 脚本不可见。
+不在列表中的方法对 Mod 脚本不可见。典型例子：`AddTriggerEvent` 不在 gameObject/BlockObject 白名单中，被硬编码替换为 `TipsFunction`（gameobject.lua:2913、blockobject.lua:617）；而 **worldObject 的白名单包含 `AddTriggerEvent`**（devapicfg.lua:72），不会被替换。
+
+另外，`ApplyVirComponentInterfaces()`（gameobject.lua:2918 起）会**无条件**挂上组件/层级操作接口（`AddChild`/`GetChild`/`GetParent`/`SetParent`/`GetChildren`/`AddComponent`/`RemoveComponent`/`GetComponent`），不经过上述白名单过滤。
 
 `ComponentsMgr:PrintDiffAllInfo()` 会把这些列表作为基线快照进行版本 diff（开发工具，不参与运行时）。
 
 ### 2. Service 方法黑名单（`DevApiCfg.services.*.dismethods`）
 
-这是**黑名单**，从 Service 的全量方法中屏蔽指定方法。`ScriptEnvMgr:LoadServicesApi()`（scriptenvmgr.lua:332-341）在遍历 Service 函数时跳过 `dismethods` 中的方法：
+这是**黑名单**，从 Service 的全量方法中屏蔽指定方法。`ScriptEnvMgr:LoadServicesApi()`（scriptenvmgr.lua:332-342）在遍历 Service 函数时跳过 `dismethods` 中的方法：
 
 ```lua
 if cfg.dismethods then
@@ -274,6 +304,9 @@ end
 - **Monster**: GetActorByObjid, GetObjTypeByActor, ChangeCustomModelOld
 - **CustomUI**: CreateElementId, CloneElementId
 - **World**: GetWorldById, GetWorldId
+- **Planet**: GetOrCreatePlanetWorld, KeepChunkLoaded, PreloadChunk, IsPlanetRuntimeSupported, GetDefaultSafePos, FindRandomSafePos, RegisterKeptChunk, ReleaseKeptChunk, ReleaseAllKeptChunks
+
+> 此外，`ToRunMode` / `GetBaseApi` / `OnDestroy` / `OnInit` 四个方法在所有 Service 中**无条件屏蔽**（scriptenvmgr.lua:295-300），与 dismethods 无关。
 
 ### 3. 完整过滤链
 
@@ -294,10 +327,11 @@ self.servicesMotion（Motion 环境，额外按 envType 过滤）
 |------|------|------|
 | **对象方法白名单** | `DevApiCfg.gameObject/worldObject/BlockObject` | 决定虚拟对象暴露哪些方法，不在列表中则不可见 |
 | **Service 黑名单** | `DevApiCfg.services.*.dismethods` | 从 Service 全量方法中屏蔽指定方法 |
+| **内置方法剔除** | `ToRunMode/GetBaseApi/OnDestroy/OnInit` | 所有 Service 无条件屏蔽，不参与任何配置 |
 | **Service 白名单+配置** | `DevApiCfg.services.*.methods` | 允许的方法 + MType/RType 同步/权限配置 |
 | **devServices 白名单** | `DevApiCfg.devServices.*.methods` | 从沙盒 API 中再精选，用于第三方 Mod 和 Motion 环境 |
 | **WhiteList 鉴权** | `DevApiRType.WhiteList` | 函数可见但调用时检查 ns_version 云服务配置 |
 | **频率限制** | `Uin_TimeLimit / TimeLimit` | 调用成功后有冷却期保护 |
 | **同步优化** | `CompareParam / ResetCompareParam` | UI 等高频场景避免发送重复数据 |
 
-**WhiteList 判定核心**：`condition_configs` 存在 + 内部无 `return false` → 放行。`super_uin_list` 仅为快速通道，`uin_list` 才是硬门控。`condition_configs` 为 nil（ns_version 中无对应 key）→ 直接拒绝。
+**WhiteList 判定核心**：`condition_configs` 存在 + 内部无 `return false` → 放行。`super_uin_list` 仅为快速通道，`uin_list` 才是硬门控，`versions_yes`/`versions_no` 可提前放行/拒绝。`condition_configs` 为 nil（ns_version 中无对应 key）→ 直接拒绝。

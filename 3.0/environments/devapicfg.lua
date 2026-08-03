@@ -1,24 +1,24 @@
 ﻿-- chunkname: @F:/minichina/AssetRuntime/CommonResource/Assets/../Script/luascript/ugc/framework/api/DevApiCfg.lua
 
 DevApiMType = {
-	Mod = 9,
-	BoardCast = 8,
-	HostAndClient = 7,
-	ReportHost = 6,
 	ClientData = 5,
 	SyncPack = 4,
 	Sync = 3,
 	NoBlock = 2,
 	Block = 1,
-	Normal = 0
+	Normal = 0,
+	Mod = 9,
+	BoardCast = 8,
+	HostAndClient = 7,
+	ReportHost = 6
 }
 DevApiRType = {
+	TimeLimit = 4,
 	WhiteList = 3,
 	Uin_TimeLimit = 2,
 	ResendMsg = 7,
 	ResetCompareParam = 6,
-	CompareParam = 5,
-	TimeLimit = 4
+	CompareParam = 5
 }
 DevApiEnvType = {
 	Motion = 3,
@@ -286,6 +286,27 @@ DevApiCfg = {
 					DevApiMType.Normal,
 					{
 						[DevApiRType.WhiteList] = "LuaApi3_Item_IsBindItem"
+					}
+				},
+				{
+					"LevelUpEquipOrGunForPlayer",
+					DevApiMType.Normal,
+					{
+						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
+					}
+				},
+				{
+					"FreshPowerEquipOrGunForPlayer",
+					DevApiMType.Normal,
+					{
+						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
+					}
+				},
+				{
+					"EmpowerEquipOrGunForPlayer",
+					DevApiMType.Normal,
+					{
+						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
 					}
 				}
 			}
@@ -1431,6 +1452,54 @@ DevApiCfg = {
 						[DevApiRType.ResendMsg] = 1,
 						[DevApiRType.WhiteList] = "LuaApi3_World_SetChunkRectAlwaysLoaded"
 					}
+				},
+				{
+					"SetSkyBoxColorAnim",
+					DevApiMType.Sync
+				},
+				{
+					"SetTimeVanishingSpeed",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxTemplate",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxMaps",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxColor",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxAttr",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxAttrWithNoTime",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxFilter",
+					DevApiMType.Sync
+				},
+				{
+					"SetSkyBoxFilterSwitch",
+					DevApiMType.Sync
+				},
+				{
+					"SetSkyBoxSwitch",
+					DevApiMType.BoardCast
+				},
+				{
+					"SetSkyBoxMapsAnim",
+					DevApiMType.Sync
+				},
+				{
+					"SetSkyBoxFilterAnim",
+					DevApiMType.Sync
 				}
 			},
 			dismethods = {
@@ -1508,6 +1577,13 @@ DevApiCfg = {
 					DevApiMType.SyncPack,
 					{
 						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
+					}
+				},
+				{
+					"ReportOfficeActivateData",
+					DevApiMType.Normal,
+					{
+						[DevApiRType.WhiteList] = "trigger_api_ReportOfficeActivateData"
 					}
 				}
 			}
@@ -1717,40 +1793,54 @@ DevApiCfg = {
 			ix = 34,
 			methods = {},
 			dismethods = {}
+		},
+		Planet = {
+			ix = 35,
+			dismethods = {
+				"GetOrCreatePlanetWorld",
+				"KeepChunkLoaded",
+				"PreloadChunk",
+				"IsPlanetRuntimeSupported",
+				"GetDefaultSafePos",
+				"FindRandomSafePos",
+				"RegisterKeptChunk",
+				"ReleaseKeptChunk",
+				"ReleaseAllKeptChunks"
+			}
 		}
 	},
 	ScriptFenvG = {
-		_VERSION = true,
+		coroutine = true,
+		tostring = true,
 		math = true,
-		string = true,
+		unpack = true,
 		copy_table = true,
 		getServerTime = true,
-		assert = true,
-		CREATUREATTR = true,
+		MODATTRIB_TYPE = true,
+		GameActorType = true,
+		PLAYERATTR = true,
+		rawget = true,
 		VIEWPORTTYPE = true,
+		GRAPHICS = true,
+		setmetatable = true,
+		_VERSION = true,
+		LinearTransformation = true,
 		ITEMATTR = true,
+		next = true,
+		type = true,
+		HURTTYPE = true,
+		table = true,
+		CREATUREATTR = true,
+		BACKPACK_TYPE = true,
 		xpcall = true,
 		pcall = true,
 		error = true,
-		tostring = true,
+		string = true,
 		tonumber = true,
 		select = true,
-		unpack = true,
+		assert = true,
 		rawequal = true,
-		GRAPHICS = true,
-		rawget = true,
-		HURTTYPE = true,
-		PLAYERATTR = true,
-		setmetatable = true,
-		BACKPACK_TYPE = true,
-		GameActorType = true,
-		MODATTRIB_TYPE = true,
-		next = true,
-		type = true,
-		LinearTransformation = true,
-		table = true,
-		ABSOLUTECAMPTYPE = true,
-		coroutine = true
+		ABSOLUTECAMPTYPE = true
 	}
 }
 DevApiCfg.devServices = {
@@ -1767,7 +1857,8 @@ DevApiCfg.devServices = {
 			"CreatePrefab",
 			"CreatePrefabInst",
 			"Destroy",
-			"GetObjectPrefab"
+			"GetObjectPrefab",
+			"FindPlanet"
 		}
 	},
 	Data = {
@@ -2322,7 +2413,8 @@ DevApiCfg.devServices = {
 			"GetWorld",
 			"GetUIObject",
 			"TransmitToCategoryRoom",
-			"GetEffectParams"
+			"GetEffectParams",
+			"GetAttrVal"
 		},
 		dismethods = {}
 	},
@@ -2427,7 +2519,10 @@ DevApiCfg.devServices = {
 			"GetItemInstFacade",
 			"GetTags",
 			"CreateBindItemInBackpack",
-			"IsBindItem"
+			"IsBindItem",
+			"LevelUpEquipOrGunForPlayer",
+			"FreshPowerEquipOrGunForPlayer",
+			"EmpowerEquipOrGunForPlayer"
 		}
 	},
 	Block = {
@@ -2699,7 +2794,8 @@ DevApiCfg.devServices = {
 			"PlayAnimByObj",
 			"EmitByShooter",
 			"EmitByShooterTarget",
-			"EmitByShooterTargetPos"
+			"EmitByShooterTargetPos",
+			"TriggerSkillCall"
 		}
 	},
 	Monster = {
@@ -2936,6 +3032,15 @@ DevApiCfg.devServices = {
 			"EmitByPositionTarget"
 		}
 	},
+	Planet = {
+		name = "Planet",
+		methods = {
+			"CreatePlanet",
+			"PreloadPlanet",
+			"TeleportToPlanet",
+			"ReleasePreloadedPlanet"
+		}
+	},
 	WorldContainer = {
 		name = "容器模块",
 		methods = {
@@ -3039,7 +3144,8 @@ DevApiCfg.devServices = {
 			"GetShopItemInfo",
 			"GetActivateProgress",
 			"GetActivateReward",
-			"SendClientReportEvent"
+			"SendClientReportEvent",
+			"ReportOfficeActivateData"
 		}
 	},
 	Timeline = {
