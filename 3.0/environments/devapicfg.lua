@@ -1,29 +1,29 @@
 ﻿-- chunkname: @F:/minichina/AssetRuntime/CommonResource/Assets/../Script/luascript/ugc/framework/api/DevApiCfg.lua
 
 DevApiMType = {
+	Mod = 9,
+	BoardCast = 8,
+	HostAndClient = 7,
+	ReportHost = 6,
 	ClientData = 5,
 	SyncPack = 4,
 	Sync = 3,
 	NoBlock = 2,
 	Block = 1,
-	Normal = 0,
-	Mod = 9,
-	BoardCast = 8,
-	HostAndClient = 7,
-	ReportHost = 6
+	Normal = 0
 }
 DevApiRType = {
+	ResetCompareParam = 6,
+	CompareParam = 5,
 	TimeLimit = 4,
 	WhiteList = 3,
 	Uin_TimeLimit = 2,
-	ResendMsg = 7,
-	ResetCompareParam = 6,
-	CompareParam = 5
+	ResendMsg = 7
 }
 DevApiEnvType = {
-	Motion = 3,
 	Client = 2,
-	Host = 1
+	Host = 1,
+	Motion = 3
 }
 DevApiCfg = {
 	gameObject = {
@@ -1340,6 +1340,14 @@ DevApiCfg = {
 					{
 						[DevApiRType.WhiteList] = "LuaApi3_Player_GetBlockAtlasInfo"
 					}
+				},
+				{
+					"EnterGunState",
+					DevApiMType.SyncPack
+				},
+				{
+					"LevelGunState",
+					DevApiMType.SyncPack
 				}
 			}
 		},
@@ -1810,37 +1818,37 @@ DevApiCfg = {
 		}
 	},
 	ScriptFenvG = {
-		coroutine = true,
-		tostring = true,
-		math = true,
-		unpack = true,
-		copy_table = true,
-		getServerTime = true,
-		MODATTRIB_TYPE = true,
-		GameActorType = true,
-		PLAYERATTR = true,
-		rawget = true,
 		VIEWPORTTYPE = true,
-		GRAPHICS = true,
-		setmetatable = true,
-		_VERSION = true,
-		LinearTransformation = true,
-		ITEMATTR = true,
-		next = true,
-		type = true,
 		HURTTYPE = true,
-		table = true,
-		CREATUREATTR = true,
-		BACKPACK_TYPE = true,
+		PLAYERATTR = true,
 		xpcall = true,
 		pcall = true,
 		error = true,
-		string = true,
+		tostring = true,
 		tonumber = true,
 		select = true,
-		assert = true,
+		unpack = true,
 		rawequal = true,
-		ABSOLUTECAMPTYPE = true
+		MODATTRIB_TYPE = true,
+		rawget = true,
+		GameActorType = true,
+		BACKPACK_TYPE = true,
+		setmetatable = true,
+		CREATUREATTR = true,
+		getServerTime = true,
+		copy_table = true,
+		next = true,
+		type = true,
+		math = true,
+		table = true,
+		GRAPHICS = true,
+		ABSOLUTECAMPTYPE = true,
+		coroutine = true,
+		_VERSION = true,
+		string = true,
+		LinearTransformation = true,
+		ITEMATTR = true,
+		assert = true
 	}
 }
 DevApiCfg.devServices = {
@@ -2046,6 +2054,9 @@ DevApiCfg.devServices = {
 					"RemoveComponent",
 					"CallComponentFunction",
 					"CallComponentFunctionVar",
+					"CallBlockComponentFunctionByPos",
+					"CallBlockComponentFunctionByPosVar",
+					"GetBlockComponentPropertyByPos",
 					"SetEventIsEnable",
 					"IsEventEnable",
 					"GetIsHasCmp",
@@ -2167,6 +2178,7 @@ DevApiCfg.devServices = {
 					"OpenInnerView_AnimView",
 					"OpenInnerView_MiniMap",
 					"OpenInnerView_MiniShop",
+					"OpenInnerView_AdventureHandBook",
 					"SetGameDefeat",
 					"SetGameWin",
 					"SetRevivePoint",
@@ -2917,7 +2929,9 @@ DevApiCfg.devServices = {
 			"GetHorseRealID",
 			"GetPersonInfo",
 			"RotateMainModel",
-			"GetBlockAtlasInfo"
+			"GetBlockAtlasInfo",
+			"EnterGunState",
+			"LevelGunState"
 		}
 	},
 	Buff = {
