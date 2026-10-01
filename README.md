@@ -29,10 +29,54 @@
 
 | 文件 | 说明 |
 |---|---|
-| `ugcofficialenv.txt` | 官方 UGC 运行环境导出（1.59.0） |
-| `ugcscriptenv.txt` | UGC 脚本环境导出（1.59.0） |
+| `dump_env.lua` | **环境导出脚本**（在游戏内运行）。导出 dev / official / motion 三套沙盒环境面，外加 `ScriptEnvMgr` 运行时配置，输出 `mwenviron/1` 格式。 |
+| `devenv.lua` | 脚本（第三方 Mod / 本地地图）环境导出，对应 `ScriptEnvMgr.servicesDev` |
+| `officialenv.lua` | 官方脚本环境导出，对应 `ScriptEnvMgr.services` |
+| `motionenv.lua` | 空中动作（Motion）环境导出，对应 `ScriptEnvMgr.servicesMotion` |
+| `mgrenv.lua` | `ScriptEnvMgr` 运行时配置：`limitcfg`（限频/白名单真值）、`modServices`、`scriptEnum`、`scriptEnvList` |
+| `tests/stub_env.lua` | 离线桩：伪造 `ScriptEnvMgr` / `Service` / `DevApiCfg` / 枚举全局，不启动游戏也能跑通 `dump_env.lua` |
 | `devapicfg.lua` | 引擎 `DevApiCfg.lua`（API 权限控制与频率限制配置）反编译源码 |
 | `devapicfg_analysis.md` | 对 `DevApiCfg` 限制体系（对象方法白名单、Service 黑白名单、调用类型等）的分析 |
+
+#### `mwenviron/1` 导出格式
+
+文件是一个**合法的 Lua chunk**（`return` 一张表），键已排序，不含内存地址，因此可以：
+
+- 用 `loadstring` / `loadfile` 直接还原成表；
+- 用 `git diff` 看出「哪个 API 加了、哪个方法签名变了、哪个方法的调用类型或限频改了」。
+
+| 写法 | 含义 |
+|---|---|
+| `["$meta"]` | 该表的元表（`debug.getmetatable`） |
+| `["$ref"] = {k1, k2}` | 指向别处已导出的表（键路径），替代旧格式的 `table: 0xADDR` |
+| `["$userdata"]` | userdata / thread 的占位字符串 |
+| `["$truncated"]` | 达到深度上限被截断 |
+| `["$$foo"]` | 真实键名是 `$foo`（多一个 `$` 作转义） |
+| `function(a, b) end, --[[…]]` | 函数只保留签名，尾部注释给出来源与调用限制 |
+
+函数尾部的 `--[[…]]` 注释用 `;` 分隔，可能包含：
+
+| 注释 | 含义 |
+|---|---|
+| `@<路径>:<行号>` | 真实服务函数所在的 Lua 源文件位置 |
+| `@service Service.Method` | 这个包装函数转发到的真实服务方法 |
+| `@mtype <类型>` | 调用类型 `DevApiMType`：`Normal` / `Block` / `Sync` / `SyncPack` / `ClientData` / `HostAndClient` / `BoardCast` / `ReportHost` / `Mod`（决定要不要走网络同步、会注入哪些额外参数） |
+| `@rtype <类型>=<值>` | 调用限制 `DevApiRType`：`Uin_TimeLimit`（按 UIN 冷却）/ `TimeLimit`（全局冷却）/ `WhiteList`（白名单 key）/ `CompareParam` / `ResetCompareParam` / `ResendMsg` |
+| `@C` / `@builtin` | 原生函数 |
+| `@unresolved <key>` | 包装函数找不到对应真实方法（参数名不可信） |
+
+例子：
+
+```lua
+["GetFriendList"] = function(self, reportid, uin, index, size) end,
+--[[@F:/.../services/Player.lua:1234; @service Player.GetFriendList; @mtype ClientData; @rtype Uin_TimeLimit=(10,"调用频繁，请稍后尝试！")]]
+```
+
+导出方式（MWRC 控制台一行，`Z:` 映射到宿主根目录）：
+
+```lua
+local p="Z:/home/yuey1ng/mini/miniworld-scripts/3.0/environments/dump_env.lua" local f=io.open(p,"rb") local s=f:read("*a") f:close() return loadstring(s,"dump_env")()
+```
 
 > 环境导出从游戏运行时 dump 得到，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可。
 
