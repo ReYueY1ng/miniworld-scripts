@@ -2,9 +2,9 @@
 -- Mini World UGC environment export
 -- format: mwenviron/1   generator: dump_env.lua 1.0.0
 -- face: dev
--- game: 1.59.0
--- generated: 2026-10-01 22:13:55
--- stats: tables=1565 functions=1591 refs=208 userdata=0 unresolved=0 truncated=0 maxdepth=7 bytes=485497
+-- game: 1.60.0
+-- generated: 2026-10-29 22:55:00
+-- stats: tables=1654 functions=1650 refs=223 userdata=0 unresolved=0 truncated=0 maxdepth=7 bytes=508887
 -- exported by: ReYueY1ng
 -- source url: https://github.com/ReYueY1ng/miniworld-scripts/3.0/environments
 -- licensed under: CC BY 4.0
@@ -2156,8 +2156,8 @@ return {
             },
             ["CustomUI"] = {
                 ["ChangeParent"] = function(self, playerid, uiid, elementid, parentElementid) end, --[[@service CustomUI.ChangeParent; @mtype SyncPack]]
-                ["CloneElement"] = function(self, ishost, playerid, uiid, elementid) end, --[[@service CustomUI.CloneElement; @mtype HostAndClient]]
-                ["CreateElement"] = function(self, ishost, playerid, uiid, elementType) end, --[[@service CustomUI.CreateElement; @mtype HostAndClient]]
+                ["CloneElement"] = function(self, ishost, playerid, uiid, elementid, widget3DObjId) end, --[[@service CustomUI.CloneElement; @mtype HostAndClient]]
+                ["CreateElement"] = function(self, ishost, playerid, uiid, elementType, widget3DObjId) end, --[[@service CustomUI.CreateElement; @mtype HostAndClient]]
                 ["DeleteElement"] = function(self, playerid, uiid, elementid) end, --[[@service CustomUI.DeleteElement; @mtype SyncPack]]
                 ["GetBlockIcon"] = function(self, blockid) end, --[[@service CustomUI.GetBlockIcon; @mtype Normal]]
                 ["GetElementAttrValue"] = function(self, reportid, objid, elementid, attrIdx) end, --[[@service CustomUI.GetElementAttrValue; @mtype ClientData; @rtype WhiteList="LuaApi3_CustomUI_GetElementAttrValue"]]
@@ -2177,13 +2177,13 @@ return {
                 ["RemovePositionBindActor"] = function(self, objid, uiid, elementid) end, --[[@service CustomUI.RemovePositionBindActor; @mtype SyncPack]]
                 ["RotateElement"] = function(self, objid, uiid, elementid, rotate) end, --[[@service CustomUI.RotateElement; @mtype SyncPack; @rtype CompareParam=(3)]]
                 ["SetAlpha"] = function(self, objid, uiid, elementid, alpha) end, --[[@service CustomUI.SetAlpha; @mtype SyncPack; @rtype CompareParam=(3)]]
-                ["SetBeaconBandPos"] = function(self, playerid, elementid, bandPosX, bandPosY, bandPosZ) end, --[[@service CustomUI.SetBeaconBandPos; @mtype SyncPack]]
-                ["SetBeaconClampType"] = function(self, playerid, elementid, clampType) end, --[[@service CustomUI.SetBeaconClampType; @mtype SyncPack]]
-                ["SetBeaconMapType"] = function(self, playerid, elementid, mapType) end, --[[@service CustomUI.SetBeaconMapType; @mtype Normal]]
-                ["SetBeaconMargin"] = function(self, playerid, elementid, horizontalMargin, verticalMargin) end, --[[@service CustomUI.SetBeaconMargin; @mtype SyncPack]]
-                ["SetBeaconObjId"] = function(self, playerid, elementid, objId) end, --[[@service CustomUI.SetBeaconObjId; @mtype SyncPack]]
-                ["SetBeaconOffset"] = function(self, playerid, elementid, offsetX, offsetY, offsetZ) end, --[[@service CustomUI.SetBeaconOffset; @mtype SyncPack]]
-                ["SetBeaconRadius"] = function(self, playerid, elementid, radius) end, --[[@service CustomUI.SetBeaconRadius; @mtype SyncPack]]
+                ["SetBeaconBandPos"] = function(self, playerid, elementid, bandPosX, bandPosY, bandPosZ, uiid) end, --[[@service CustomUI.SetBeaconBandPos; @mtype SyncPack]]
+                ["SetBeaconClampType"] = function(self, playerid, elementid, clampType, uiid) end, --[[@service CustomUI.SetBeaconClampType; @mtype SyncPack]]
+                ["SetBeaconMapType"] = function(self, playerid, elementid, mapType, uiid) end, --[[@service CustomUI.SetBeaconMapType; @mtype SyncPack]]
+                ["SetBeaconMargin"] = function(self, playerid, elementid, horizontalMargin, verticalMargin, uiid) end, --[[@service CustomUI.SetBeaconMargin; @mtype SyncPack]]
+                ["SetBeaconObjId"] = function(self, playerid, elementid, objId, uiid) end, --[[@service CustomUI.SetBeaconObjId; @mtype SyncPack]]
+                ["SetBeaconOffset"] = function(self, playerid, elementid, offsetX, offsetY, offsetZ, uiid) end, --[[@service CustomUI.SetBeaconOffset; @mtype SyncPack]]
+                ["SetBeaconRadius"] = function(self, playerid, elementid, radius, uiid) end, --[[@service CustomUI.SetBeaconRadius; @mtype SyncPack]]
                 ["SetColor"] = function(self, objid, uiid, elementid, color) end, --[[@service CustomUI.SetColor; @mtype SyncPack; @rtype CompareParam=(3)]]
                 ["SetFloatDamageTxt"] = function(self, playerid, elementid, objid, text, color, offsetx, offsety, movex, movey, showtime, movex2, movey2, showtime2) end, --[[@service CustomUI.SetFloatDamageTxt; @mtype SyncPack]]
                 ["SetFontSize"] = function(self, objid, uiid, elementid, size) end, --[[@service CustomUI.SetFontSize; @mtype SyncPack; @rtype CompareParam=(3)]]
@@ -2195,6 +2195,7 @@ return {
                 ["SetPosition"] = function(self, objid, uiid, elementid, x, y) end, --[[@service CustomUI.SetPosition; @mtype SyncPack; @rtype CompareParam=(3); @rtype ResetCompareParam=(3,110027,110012,110013)]]
                 ["SetPositionBandBlock"] = function(self, objid, uiid, elementid, blockPos) end, --[[@service CustomUI.SetPositionBandBlock; @mtype SyncPack]]
                 ["SetPositionBindActor"] = function(self, objid, uiid, elementid, actorId, offset) end, --[[@service CustomUI.SetPositionBindActor; @mtype SyncPack]]
+                ["SetProgressBarData"] = function(self, playerid, uiid, elementid, min, max, value) end, --[[@service CustomUI.SetProgressBarData; @mtype SyncPack; @rtype CompareParam=(3); @rtype ResetCompareParam=(3,110032,110037)]]
                 ["SetProgressBarResId"] = function(self, playerid, uiid, elementid, itype, url) end, --[[@service CustomUI.SetProgressBarResId; @mtype SyncPack]]
                 ["SetProgressBarValue"] = function(self, playerid, uiid, elementid, itype, value) end, --[[@service CustomUI.SetProgressBarValue; @mtype SyncPack; @rtype CompareParam=(3); @rtype ResetCompareParam=(3,110033,110037)]]
                 ["SetRelationPosition"] = function(self, playerid, uiid, elementid, v, xOffset, xUnits, h, yOffset, yUnits) end, --[[@service CustomUI.SetRelationPosition; @mtype SyncPack; @rtype CompareParam=(3); @rtype ResetCompareParam=(3,110011,110013,110012)]]
@@ -2293,6 +2294,63 @@ return {
                 ["IOS"] = 3,
                 ["Other"] = 0,
                 ["PC"] = 1,
+            },
+            ["DisplayBoard"] = {
+                ["CreateByPos"] = function(self, pos, cfg, offset, rot, absoluteScale) end, --[[@service DisplayBoard.CreateByPos; @mtype Normal]]
+                ["GenCustomUIBoardCfg"] = function(self, CustomUi) end, --[[@service DisplayBoard.GenCustomUIBoardCfg; @mtype Normal]]
+                ["GenImgBoardCfg"] = function(self, image, fillMode) end, --[[@service DisplayBoard.GenImgBoardCfg; @mtype Normal]]
+                ["GenProgressBoardCfg"] = function(self, minVal, maxVal, curVal, progressColor, progressBgColor, progressBgColorType, direction) end, --[[@service DisplayBoard.GenProgressBoardCfg; @mtype Normal]]
+                ["GenTxtBoardCfg"] = function(self, txt, autoSize, fontSize, color, richText) end, --[[@service DisplayBoard.GenTxtBoardCfg; @mtype Normal]]
+                ["GetColor"] = function(self, reportid, playerid, objId, property) end, --[[@service DisplayBoard.GetColor; @mtype ClientData]]
+                ["GetImage"] = function(self, reportid, playerid, objId, property) end, --[[@service DisplayBoard.GetImage; @mtype ClientData]]
+                ["GetInterface"] = function(self, reportid, playerid, objid) end, --[[@service DisplayBoard.GetInterface; @mtype ClientData]]
+                ["GetNumberAttr"] = function(self, reportid, playerid, objId, property) end, --[[@service DisplayBoard.GetNumberAttr; @mtype ClientData]]
+                ["GetText"] = function(self, reportid, playerid, objId) end, --[[@service DisplayBoard.GetText; @mtype ClientData]]
+                ["GetType"] = function(self, reportid, playerid, objid) end, --[[@service DisplayBoard.GetType; @mtype ClientData]]
+                ["IsVisible"] = function(self, reportid, playerid, objid) end, --[[@service DisplayBoard.IsVisible; @mtype ClientData]]
+                ["ReplaceByCfg"] = function(self, playerid, objId, cfg) end, --[[@service DisplayBoard.ReplaceByCfg; @mtype SyncPack]]
+                ["SetColor"] = function(self, playerid, objId, property, color) end, --[[@service DisplayBoard.SetColor; @mtype SyncPack]]
+                ["SetImage"] = function(self, playerid, objId, property, image) end, --[[@service DisplayBoard.SetImage; @mtype SyncPack]]
+                ["SetNumberAttr"] = function(self, playerid, objId, property, value) end, --[[@service DisplayBoard.SetNumberAttr; @mtype SyncPack]]
+                ["SetText"] = function(self, playerid, objId, text) end, --[[@service DisplayBoard.SetText; @mtype SyncPack]]
+                ["SetVisible"] = function(self, playerid, objid, visible) end, --[[@service DisplayBoard.SetVisible; @mtype SyncPack]]
+                ["SmoothChangeAttr"] = function(self, playerid, objid, property, time, ptype, value) end, --[[@service DisplayBoard.SmoothChangeAttr; @mtype SyncPack]]
+            },
+            ["DisplayBoardAutoSize"] = {
+                ["None"] = 1,
+                ["ScaleText"] = 0,
+            },
+            ["DisplayBoardColorAttr"] = {
+                ["All"] = 2,
+                ["Background"] = 1,
+                ["Progress"] = 5,
+                ["ProgressBackground"] = 6,
+                ["Text"] = 3,
+            },
+            ["DisplayBoardContentType"] = {
+                ["Image"] = 0,
+                ["Interface"] = 3,
+                ["Progress"] = 2,
+                ["Text"] = 1,
+            },
+            ["DisplayBoardImgAttr"] = {
+                ["Image"] = 3,
+                ["ProgressBackground"] = 1,
+                ["ProgressImg"] = 2,
+            },
+            ["DisplayBoardNumAttr"] = {
+                ["AllAlpha"] = 12,
+                ["BackgroundAlpha"] = 11,
+                ["FontSize"] = 8,
+                ["Height"] = 7,
+                ["Light"] = 13,
+                ["ProgressCurAnaMaxVal"] = 5,
+                ["ProgressCurVal"] = 2,
+                ["ProgressMaxVal"] = 4,
+                ["ProgressMinVal"] = 3,
+                ["ResponseDistance"] = 15,
+                ["VisibleLen"] = 14,
+                ["Width"] = 6,
             },
             ["DoExplodeStatus"] = {
                 ["DestroyBlock"] = {
@@ -2455,6 +2513,7 @@ return {
             ["ElementAttr"] = {
                 ["Angle"] = 10,
                 ["Color"] = 5,
+                ["FontSize"] = 109,
                 ["GlobalPos"] = 106,
                 ["GlobalPosX"] = 14,
                 ["GlobalPosY"] = 15,
@@ -2464,6 +2523,12 @@ return {
                 ["Position"] = 103,
                 ["PositionX"] = 3,
                 ["PositionY"] = 4,
+                ["ProgressBackground"] = 108,
+                ["ProgressCurrentAndMaxValue"] = 113,
+                ["ProgressCurrentValue"] = 112,
+                ["ProgressImg"] = 107,
+                ["ProgressMaxValue"] = 111,
+                ["ProgressMinValue"] = 110,
                 ["ScrollPosition"] = 105,
                 ["ScrollX"] = 12,
                 ["ScrollY"] = 13,
@@ -4056,6 +4121,12 @@ return {
                 ["STACKMAX"] = 2,
                 ["WITHERDEFENSE"] = 8,
             },
+            ["ImageFillType"] = {
+                ["Fill"] = 0,
+                ["Fit"] = 1,
+                ["Stretch"] = 2,
+                ["Tile"] = 3,
+            },
             ["Import"] = function(name, importModId) end, --[[@lua]]
             ["InnerPopUpview"] = {
                 ["AdventureHandBook"] = 18,
@@ -5083,6 +5154,18 @@ return {
                     ["ToTable"] = function(self) end, --[[@lua]]
                     ["UnSerialize"] = function(value) end, --[[@lua]]
                     ["__className_"] = "ThrowItem",
+                },
+                ["UIProject"] = {
+                    ["$meta"] = {
+                        ["__call"] = function(cls, value) end, --[[@lua]]
+                    },
+                    ["CreateDefault"] = function() end, --[[@lua]]
+                    ["GetRefType"] = function() end, --[[@lua]]
+                    ["IsValueOfType"] = function(value) end, --[[@lua]]
+                    ["Serialize"] = function(value) end, --[[@lua]]
+                    ["ToTable"] = function(self) end, --[[@lua]]
+                    ["UnSerialize"] = function(value) end, --[[@lua]]
+                    ["__className_"] = "UIProject",
                 },
                 ["UiElement"] = {
                     ["$meta"] = {
@@ -6288,7 +6371,7 @@ return {
                 ["GetSkinlist"] = function(...) end, --[[@lua]]
                 ["GetViewMode"] = function(self, reportid, uin) end, --[[@service Player.GetViewMode; @mtype ClientData]]
                 ["GetVisibleRange"] = function(...) end, --[[@lua]]
-                ["GunGetMagazine"] = function(...) end, --[[@lua]]
+                ["GunGetMagazine"] = function(self, uin) end, --[[@service Player.GunGetMagazine; @mtype Normal]]
                 ["HasFriend"] = function(self, reportid, playerid, friendid) end, --[[@service Player.HasFriend; @mtype ClientData]]
                 ["HasHandheldGun"] = function(...) end, --[[@lua]]
                 ["HideUIView"] = function(self, objid, uiname, effectid, time) end, --[[@service Player.HideUIView; @mtype Normal]]
@@ -6296,6 +6379,7 @@ return {
                 ["IsHandWeaponSpellEnhancementActive"] = function(self, uin, enhanceIndex) end, --[[@service Player.IsHandWeaponSpellEnhancementActive; @mtype Normal]]
                 ["ItemSkillCDDone"] = function(self, objid, itemid) end, --[[@service Player.ItemSkillCDDone; @mtype Normal]]
                 ["ItemSkillCDEnter"] = function(self, objid, itemid, cd) end, --[[@service Player.ItemSkillCDEnter; @mtype Normal]]
+                ["KickPlayer"] = function(self, objid) end, --[[@service Player.KickPlayer; @mtype Normal]]
                 ["LevelGunState"] = function(self, objid, state) end, --[[@service Player.LevelGunState; @mtype SyncPack]]
                 ["MountActor"] = function(self, playerid, objid, bctrl) end, --[[@service Player.MountActor; @mtype Normal]]
                 ["NotifyGameInfo2Self"] = function(self, objid, info) end, --[[@service Player.NotifyGameInfo2Self; @mtype Normal]]
@@ -7621,9 +7705,14 @@ return {
                     ["SetEventIsEnable"] = function(self, funcname, enable, cmp) end, --[[@service Trigger.Component.SetEventIsEnable; @mtype Normal]]
                 },
                 ["CustomUI"] = {
+                    ["ChangeParent"] = function(self, playerid, uiid, elementid, parentElementid) end, --[[@service Trigger.CustomUI.ChangeParent; @mtype Normal]]
+                    ["CloneElement"] = function(self, playerid, uiid, elementid, widget3DObjId) end, --[[@service Trigger.CustomUI.CloneElement; @mtype Normal]]
+                    ["CreateElement"] = function(self, playerid, uiid, elementType, widget3DObjId) end, --[[@service Trigger.CustomUI.CreateElement; @mtype Normal]]
+                    ["DeleteElement"] = function(self, playerid, uiid, elementid) end, --[[@service Trigger.CustomUI.DeleteElement; @mtype Normal]]
                     ["GetElementAttrValue"] = function(self, playerid, elementid, enumId) end, --[[@service Trigger.CustomUI.GetElementAttrValue; @mtype Normal]]
                     ["GetProgressBarValue"] = function(self, objid, uiid, elementid, itype) end, --[[@service Trigger.CustomUI.GetProgressBarValue; @mtype Normal]]
                     ["GetScreenSize"] = function(self, objid, ix) end, --[[@service Trigger.CustomUI.GetScreenSize; @mtype Normal]]
+                    ["HideElement"] = function(self, playerid, uiid, elementid, effectid, time) end, --[[@service Trigger.CustomUI.HideElement; @mtype Normal]]
                     ["MakeElementAnim"] = function(self, animid, time, mode) end, --[[@service Trigger.CustomUI.MakeElementAnim; @mtype Normal]]
                     ["MakeSmoothMoveBy"] = function(self, time, dir, isadd, len) end, --[[@service Trigger.CustomUI.MakeSmoothMoveBy; @mtype Normal]]
                     ["MakeSmoothMoveTo"] = function(self, time, x, y) end, --[[@service Trigger.CustomUI.MakeSmoothMoveTo; @mtype Normal]]
@@ -7634,9 +7723,37 @@ return {
                     ["MakeUITextAnim"] = function(self, animid, time) end, --[[@service Trigger.CustomUI.MakeUITextAnim; @mtype Normal]]
                     ["PlayAnim"] = function(self, playerid, uiid, elementid, info) end, --[[@service Trigger.CustomUI.PlayAnim; @mtype Normal]]
                     ["PlaySmoothAnim"] = function(self, playerid, uiid, elementid, info) end, --[[@service Trigger.CustomUI.PlaySmoothAnim; @mtype Normal]]
-                    ["SetBeaconBand"] = function(self, playerid, elementid, itype, param) end, --[[@service Trigger.CustomUI.SetBeaconBand; @mtype Normal]]
+                    ["RotateElement"] = function(self, playerid, uiid, elementid, rotate) end, --[[@service Trigger.CustomUI.RotateElement; @mtype Normal]]
+                    ["SetAlpha"] = function(self, playerid, uiid, elementid, alpha) end, --[[@service Trigger.CustomUI.SetAlpha; @mtype Normal]]
+                    ["SetBeaconBand"] = function(self, playerid, elementid, itype, param, uiid) end, --[[@service Trigger.CustomUI.SetBeaconBand; @mtype Normal]]
+                    ["SetColor"] = function(self, playerid, uiid, elementid, color) end, --[[@service Trigger.CustomUI.SetColor; @mtype Normal]]
+                    ["SetFontSize"] = function(self, playerid, uiid, elementid, size) end, --[[@service Trigger.CustomUI.SetFontSize; @mtype Normal]]
+                    ["SetLoaderModel"] = function(self, playerid, uiid, elementid, modelName) end, --[[@service Trigger.CustomUI.SetLoaderModel; @mtype Normal]]
                     ["SetLoaderModelAct"] = function(self, playerid, uiid, elementid, animid, speed, playmode) end, --[[@service Trigger.CustomUI.SetLoaderModelAct; @mtype Normal]]
+                    ["SetLoaderModelDir"] = function(self, playerid, uiid, elementid, yaw) end, --[[@service Trigger.CustomUI.SetLoaderModelDir; @mtype Normal]]
+                    ["SetLoaderModelScale"] = function(self, playerid, uiid, elementid, scale) end, --[[@service Trigger.CustomUI.SetLoaderModelScale; @mtype Normal]]
+                    ["SetPosition"] = function(self, playerid, uiid, elementid, x, y) end, --[[@service Trigger.CustomUI.SetPosition; @mtype Normal]]
+                    ["SetProgressBarResId"] = function(self, playerid, uiid, elementid, itype, url) end, --[[@service Trigger.CustomUI.SetProgressBarResId; @mtype Normal]]
+                    ["SetProgressBarValue"] = function(self, playerid, uiid, elementid, itype, value) end, --[[@service Trigger.CustomUI.SetProgressBarValue; @mtype Normal]]
+                    ["SetRelationPosition"] = function(self, playerid, uiid, elementid, v, xOffset, xUnits, h, yOffset, yUnits) end, --[[@service Trigger.CustomUI.SetRelationPosition; @mtype Normal]]
+                    ["SetRelationSize"] = function(self, playerid, uiid, elementid, width, widthUnits, height, heightUnits) end, --[[@service Trigger.CustomUI.SetRelationSize; @mtype Normal]]
+                    ["SetSize"] = function(self, playerid, uiid, elementid, width, height) end, --[[@service Trigger.CustomUI.SetSize; @mtype Normal]]
+                    ["SetSliderBarImg"] = function(self, playerid, uiid, elementid, url) end, --[[@service Trigger.CustomUI.SetSliderBarImg; @mtype Normal]]
+                    ["SetSliderDir"] = function(self, playerid, uiid, elementid, dir) end, --[[@service Trigger.CustomUI.SetSliderDir; @mtype Normal]]
+                    ["SetSpineAnimID"] = function(self, playerid, uiid, elementid, animid, animindex, playmode) end, --[[@service Trigger.CustomUI.SetSpineAnimID; @mtype Normal]]
+                    ["SetState"] = function(self, playerid, uiid, pageIndex, easeType, time) end, --[[@service Trigger.CustomUI.SetState; @mtype Normal]]
                     ["SetText"] = function(self, playerid, uiid, elementid, text, info) end, --[[@service Trigger.CustomUI.SetText; @mtype Normal]]
+                    ["SetTexture"] = function(self, playerid, uiid, elementid, url) end, --[[@service Trigger.CustomUI.SetTexture; @mtype Normal]]
+                    ["ShowElement"] = function(self, playerid, uiid, elementid, effectid, time) end, --[[@service Trigger.CustomUI.ShowElement; @mtype Normal]]
+                    ["SmoothIncreaseProgress"] = function(self, playerid, uiid, elementid, time, ptype, value) end, --[[@service Trigger.CustomUI.SmoothIncreaseProgress; @mtype Normal]]
+                    ["StopAnim"] = function(self, playerid, uiid, elementid, itype) end, --[[@service Trigger.CustomUI.StopAnim; @mtype Normal]]
+                    ["TurnSliderToPos"] = function(self, playerid, uiid, elementid, x, y) end, --[[@service Trigger.CustomUI.TurnSliderToPos; @mtype Normal]]
+                },
+                ["DisplayBoard"] = {
+                    ["IsVisible"] = function(self, objid, player) end, --[[@service Trigger.DisplayBoard.IsVisible; @mtype Normal]]
+                    ["ReplaceByCfg"] = function(self, cfg, objid) end, --[[@service Trigger.DisplayBoard.ReplaceByCfg; @mtype Normal]]
+                    ["ReplaceByCfgForPlayer"] = function(self, player, cfg, objid) end, --[[@service Trigger.DisplayBoard.ReplaceByCfgForPlayer; @mtype Normal]]
+                    ["SetVisible"] = function(self, player, visible, objid) end, --[[@service Trigger.DisplayBoard.SetVisible; @mtype Normal]]
                 },
                 ["DoObjOrArrayAction"] = function(self, src, fn) end, --[[@service Trigger.DoObjOrArrayAction; @mtype Normal]]
                 ["GameObject"] = {
@@ -8113,6 +8230,7 @@ return {
                 ["PlayerShortcutRemItem"] = "Player.ShortcutRemItem",
                 ["PlayerTouchBlock"] = "Player.TouchBlock",
                 ["PlayerTouchObj"] = "Player.TouchObj",
+                ["PlayerUseBullet"] = "Player.UseBullet",
                 ["PlayerUseGiftPack"] = "Player.UseGiftPack",
                 ["PlayerUseItem"] = "Player.UseItem",
                 ["PlotBegin"] = "Plot.begin",
@@ -8160,6 +8278,318 @@ return {
                 ["Id"] = 2,
                 ["Name"] = 1,
                 ["Visibility"] = 3,
+            },
+            ["UIBarProgressDirection"] = {
+                ["BottomToTop"] = 2,
+                ["LeftToRight"] = 0,
+                ["RightToLeft"] = 1,
+                ["TopToBottom"] = 3,
+            },
+            ["UIBillboard"] = {
+                ["BackFaceMode"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Background"] = 1,
+                    ["Content"] = 2,
+                    ["MirroredContent"] = 3,
+                    ["Transparent"] = 0,
+                    ["__info"] = {
+                        ["Background"] = {
+                            ["name"] = "背面显示底板",
+                            ["sort"] = 2,
+                        },
+                        ["Content"] = {
+                            ["name"] = "背面显示内容",
+                            ["sort"] = 3,
+                        },
+                        ["MirroredContent"] = {
+                            ["name"] = "背面显示内容（镜像）",
+                            ["sort"] = 4,
+                        },
+                        ["Transparent"] = {
+                            ["name"] = "背面透明",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["BarProgressDirection"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["BottomToTop"] = 2,
+                    ["LeftToRight"] = 0,
+                    ["RightToLeft"] = 1,
+                    ["TopToBottom"] = 3,
+                    ["__info"] = {
+                        ["BottomToTop"] = {
+                            ["name"] = "从下到上",
+                            ["sort"] = 3,
+                        },
+                        ["LeftToRight"] = {
+                            ["name"] = "从左到右",
+                            ["sort"] = 1,
+                        },
+                        ["RightToLeft"] = {
+                            ["name"] = "从右到左",
+                            ["sort"] = 2,
+                        },
+                        ["TopToBottom"] = {
+                            ["name"] = "从上到下",
+                            ["sort"] = 4,
+                        },
+                    },
+                },
+                ["ContentType"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Image"] = 0,
+                    ["Interface"] = 3,
+                    ["Progress"] = 2,
+                    ["Text"] = 1,
+                    ["__info"] = {
+                        ["Image"] = {
+                            ["name"] = "图片",
+                            ["sort"] = 1,
+                        },
+                        ["Interface"] = {
+                            ["name"] = "界面",
+                            ["sort"] = 4,
+                        },
+                        ["Progress"] = {
+                            ["name"] = "进度条",
+                            ["sort"] = 3,
+                        },
+                        ["Text"] = {
+                            ["name"] = "文字",
+                            ["sort"] = 2,
+                        },
+                    },
+                },
+                ["HorizontalAlign"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Center"] = 1,
+                    ["Left"] = 0,
+                    ["Right"] = 2,
+                    ["__info"] = {
+                        ["Center"] = {
+                            ["name"] = "居中",
+                            ["sort"] = 2,
+                        },
+                        ["Left"] = {
+                            ["name"] = "居左",
+                            ["sort"] = 1,
+                        },
+                        ["Right"] = {
+                            ["name"] = "居右",
+                            ["sort"] = 3,
+                        },
+                    },
+                },
+                ["ImageFill"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Fill"] = 0,
+                    ["Fit"] = 1,
+                    ["OriginalSize"] = 3,
+                    ["Stretch"] = 2,
+                    ["__info"] = {
+                        ["Fill"] = {
+                            ["name"] = "填充",
+                            ["sort"] = 1,
+                        },
+                        ["Fit"] = {
+                            ["name"] = "适应",
+                            ["sort"] = 2,
+                        },
+                        ["OriginalSize"] = {
+                            ["name"] = "原始大小",
+                            ["sort"] = 4,
+                        },
+                        ["Stretch"] = {
+                            ["name"] = "拉伸",
+                            ["sort"] = 3,
+                        },
+                    },
+                },
+                ["LightMode"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Emissive"] = 1,
+                    ["Lit"] = 0,
+                    ["__info"] = {
+                        ["Emissive"] = {
+                            ["name"] = "自发光",
+                            ["sort"] = 2,
+                        },
+                        ["Lit"] = {
+                            ["name"] = "受光",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["Outline"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["None"] = 0,
+                    ["Thick"] = 2,
+                    ["Thin"] = 1,
+                    ["__info"] = {
+                        ["None"] = {
+                            ["name"] = "无",
+                            ["sort"] = 1,
+                        },
+                        ["Thick"] = {
+                            ["name"] = "粗",
+                            ["sort"] = 3,
+                        },
+                        ["Thin"] = {
+                            ["name"] = "细",
+                            ["sort"] = 2,
+                        },
+                    },
+                },
+                ["ProgressImageFill"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Clip"] = 1,
+                    ["Stretch"] = 0,
+                    ["__info"] = {
+                        ["Clip"] = {
+                            ["name"] = "裁剪",
+                            ["sort"] = 2,
+                        },
+                        ["Stretch"] = {
+                            ["name"] = "拉伸",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["ProgressType"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Bar"] = 0,
+                    ["Ring"] = 1,
+                    ["__info"] = {
+                        ["Bar"] = {
+                            ["name"] = "条形进度条",
+                            ["sort"] = 1,
+                        },
+                        ["Ring"] = {
+                            ["name"] = "环形进度条",
+                            ["sort"] = 2,
+                        },
+                    },
+                },
+                ["ProgressValueStyle"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Current"] = 2,
+                    ["CurrentMax"] = 1,
+                    ["Hidden"] = 4,
+                    ["Maximum"] = 3,
+                    ["Percentage"] = 0,
+                    ["__info"] = {
+                        ["Current"] = {
+                            ["name"] = "当前值",
+                            ["sort"] = 3,
+                        },
+                        ["CurrentMax"] = {
+                            ["name"] = "当前值/最大值",
+                            ["sort"] = 2,
+                        },
+                        ["Hidden"] = {
+                            ["name"] = "隐藏",
+                            ["sort"] = 5,
+                        },
+                        ["Maximum"] = {
+                            ["name"] = "最大值",
+                            ["sort"] = 4,
+                        },
+                        ["Percentage"] = {
+                            ["name"] = "百分比",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["RingProgressDirection"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Clockwise"] = 0,
+                    ["CounterClockwise"] = 1,
+                    ["__info"] = {
+                        ["Clockwise"] = {
+                            ["name"] = "顺时针",
+                            ["sort"] = 1,
+                        },
+                        ["CounterClockwise"] = {
+                            ["name"] = "逆时针",
+                            ["sort"] = 2,
+                        },
+                    },
+                },
+                ["Shadow"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Enabled"] = 1,
+                    ["None"] = 0,
+                    ["__info"] = {
+                        ["Enabled"] = {
+                            ["name"] = "有",
+                            ["sort"] = 2,
+                        },
+                        ["None"] = {
+                            ["name"] = "无",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["SpaceMode"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["FixedScreen"] = 2,
+                    ["Scene"] = 0,
+                    ["Screen"] = 1,
+                    ["__info"] = {
+                        ["FixedScreen"] = {
+                            ["name"] = "近大远小",
+                            ["sort"] = 3,
+                        },
+                        ["Scene"] = {
+                            ["name"] = "场景",
+                            ["sort"] = 1,
+                        },
+                        ["Screen"] = {
+                            ["name"] = "固定大小",
+                            ["sort"] = 2,
+                        },
+                    },
+                },
+                ["TextAutoSize"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["None"] = 1,
+                    ["ScaleText"] = 0,
+                    ["__info"] = {
+                        ["None"] = {
+                            ["name"] = "无",
+                            ["sort"] = 2,
+                        },
+                        ["ScaleText"] = {
+                            ["name"] = "缩放文字",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+                ["VerticalAlign"] = {
+                    ["$meta"] = { ["$ref"] = {"$meta", "__index", "AdaptiveJoin", "ModeType", "$meta"} },
+                    ["Bottom"] = 2,
+                    ["Center"] = 1,
+                    ["Top"] = 0,
+                    ["__info"] = {
+                        ["Bottom"] = {
+                            ["name"] = "居下",
+                            ["sort"] = 3,
+                        },
+                        ["Center"] = {
+                            ["name"] = "居中",
+                            ["sort"] = 2,
+                        },
+                        ["Top"] = {
+                            ["name"] = "居上",
+                            ["sort"] = 1,
+                        },
+                    },
+                },
+            },
+            ["UIProgressType"] = {
+                ["Bar"] = 0,
+                ["Ring"] = 1,
             },
             ["UIProjectSet"] = {
                 ["bgColorEnum"] = {
@@ -8212,6 +8642,10 @@ return {
                     ["lowByMiniMapFrame"] = 1,
                     ["none"] = 0,
                 },
+            },
+            ["UIRowProgressDirection"] = {
+                ["Clockwise"] = 0,
+                ["CounterClockwise"] = 1,
             },
             ["UIScollDir"] = {
                 ["Both"] = 2,

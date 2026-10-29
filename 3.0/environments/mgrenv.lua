@@ -2,9 +2,9 @@
 -- Mini World UGC environment export
 -- format: mwenviron/1   generator: dump_env.lua 1.0.0
 -- face: mgr
--- game: 1.59.0
--- generated: 2026-10-01 22:13:55
--- stats: tables=213 functions=0 refs=0 userdata=0 unresolved=0 truncated=0 maxdepth=3 bytes=15787
+-- game: 1.60.0
+-- generated: 2026-10-29 22:55:00
+-- stats: tables=215 functions=0 refs=0 userdata=0 unresolved=0 truncated=0 maxdepth=3 bytes=15859
 -- exported by: ReYueY1ng
 -- source url: https://github.com/ReYueY1ng/miniworld-scripts/3.0/environments
 -- licensed under: CC BY 4.0
@@ -198,9 +198,6 @@ return {
         ["Player.GetVisibleRange"] = {
             [3] = "LuaApi3_InternalApi",
         },
-        ["Player.GunGetMagazine"] = {
-            [3] = "LuaApi3_InternalApi",
-        },
         ["Player.HasHandheldGun"] = {
             [3] = "LuaApi3_InternalApi",
         },
@@ -298,6 +295,8 @@ return {
             ["Table"] = {
             },
         },
+        ["DisplayBoard"] = {
+        },
         ["Game"] = {
         },
         ["GameEffect"] = {
@@ -352,6 +351,8 @@ return {
             ["Component"] = {
             },
             ["CustomUI"] = {
+            },
+            ["DisplayBoard"] = {
             },
             ["GameObject"] = {
             },
@@ -550,6 +551,9 @@ return {
             ["isOfficial"] = true,
         },
         ["TransToPos"] = {
+            ["isOfficial"] = true,
+        },
+        ["UIBillboard"] = {
             ["isOfficial"] = true,
         },
         ["UIProjectSet"] = {

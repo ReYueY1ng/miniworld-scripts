@@ -2,9 +2,9 @@
 -- Mini World UGC environment export
 -- format: mwenviron/1   generator: dump_env.lua 1.0.0
 -- face: motion
--- game: 1.59.0
--- generated: 2026-10-01 22:13:55
--- stats: tables=313 functions=480 refs=4 userdata=0 unresolved=0 truncated=0 maxdepth=5 bytes=139598
+-- game: 1.60.0
+-- generated: 2026-10-29 22:55:00
+-- stats: tables=326 functions=487 refs=4 userdata=0 unresolved=0 truncated=0 maxdepth=5 bytes=142548
 -- exported by: ReYueY1ng
 -- source url: https://github.com/ReYueY1ng/miniworld-scripts/3.0/environments
 -- licensed under: CC BY 4.0
@@ -609,6 +609,44 @@ return {
                 ["Other"] = 0,
                 ["PC"] = 1,
             },
+            ["DisplayBoard"] = {
+            },
+            ["DisplayBoardAutoSize"] = {
+                ["None"] = 1,
+                ["ScaleText"] = 0,
+            },
+            ["DisplayBoardColorAttr"] = {
+                ["All"] = 2,
+                ["Background"] = 1,
+                ["Progress"] = 5,
+                ["ProgressBackground"] = 6,
+                ["Text"] = 3,
+            },
+            ["DisplayBoardContentType"] = {
+                ["Image"] = 0,
+                ["Interface"] = 3,
+                ["Progress"] = 2,
+                ["Text"] = 1,
+            },
+            ["DisplayBoardImgAttr"] = {
+                ["Image"] = 3,
+                ["ProgressBackground"] = 1,
+                ["ProgressImg"] = 2,
+            },
+            ["DisplayBoardNumAttr"] = {
+                ["AllAlpha"] = 12,
+                ["BackgroundAlpha"] = 11,
+                ["FontSize"] = 8,
+                ["Height"] = 7,
+                ["Light"] = 13,
+                ["ProgressCurAnaMaxVal"] = 5,
+                ["ProgressCurVal"] = 2,
+                ["ProgressMaxVal"] = 4,
+                ["ProgressMinVal"] = 3,
+                ["ResponseDistance"] = 15,
+                ["VisibleLen"] = 14,
+                ["Width"] = 6,
+            },
             ["DropMode"] = {
                 ["ChangePlayMode"] = 7,
                 ["DefeatMob"] = 4,
@@ -655,6 +693,7 @@ return {
             ["ElementAttr"] = {
                 ["Angle"] = 10,
                 ["Color"] = 5,
+                ["FontSize"] = 109,
                 ["GlobalPos"] = 106,
                 ["GlobalPosX"] = 14,
                 ["GlobalPosY"] = 15,
@@ -664,6 +703,12 @@ return {
                 ["Position"] = 103,
                 ["PositionX"] = 3,
                 ["PositionY"] = 4,
+                ["ProgressBackground"] = 108,
+                ["ProgressCurrentAndMaxValue"] = 113,
+                ["ProgressCurrentValue"] = 112,
+                ["ProgressImg"] = 107,
+                ["ProgressMaxValue"] = 111,
+                ["ProgressMinValue"] = 110,
                 ["ScrollPosition"] = 105,
                 ["ScrollX"] = 12,
                 ["ScrollY"] = 13,
@@ -1127,6 +1172,12 @@ return {
                 ["SHORTDEFENSE"] = 3,
                 ["STACKMAX"] = 2,
                 ["WITHERDEFENSE"] = 8,
+            },
+            ["ImageFillType"] = {
+                ["Fill"] = 0,
+                ["Fit"] = 1,
+                ["Stretch"] = 2,
+                ["Tile"] = 3,
             },
             ["InnerPopUpview"] = {
                 ["AdventureHandBook"] = 18,
@@ -1931,6 +1982,18 @@ return {
                     ["UnSerialize"] = function(value) end, --[[@lua]]
                     ["__className_"] = "ThrowItem",
                 },
+                ["UIProject"] = {
+                    ["$meta"] = {
+                        ["__call"] = function(cls, value) end, --[[@lua]]
+                    },
+                    ["CreateDefault"] = function() end, --[[@lua]]
+                    ["GetRefType"] = function() end, --[[@lua]]
+                    ["IsValueOfType"] = function(value) end, --[[@lua]]
+                    ["Serialize"] = function(value) end, --[[@lua]]
+                    ["ToTable"] = function(self) end, --[[@lua]]
+                    ["UnSerialize"] = function(value) end, --[[@lua]]
+                    ["__className_"] = "UIProject",
+                },
                 ["UiElement"] = {
                     ["$meta"] = {
                         ["__call"] = function(cls, value) end, --[[@lua]]
@@ -2719,6 +2782,8 @@ return {
                 },
                 ["CustomUI"] = {
                 },
+                ["DisplayBoard"] = {
+                },
                 ["GameObject"] = {
                 },
                 ["Graphics"] = {
@@ -2960,6 +3025,7 @@ return {
                 ["PlayerShortcutRemItem"] = "Player.ShortcutRemItem",
                 ["PlayerTouchBlock"] = "Player.TouchBlock",
                 ["PlayerTouchObj"] = "Player.TouchObj",
+                ["PlayerUseBullet"] = "Player.UseBullet",
                 ["PlayerUseGiftPack"] = "Player.UseGiftPack",
                 ["PlayerUseItem"] = "Player.UseItem",
                 ["PlotBegin"] = "Plot.begin",
@@ -3007,6 +3073,20 @@ return {
                 ["Id"] = 2,
                 ["Name"] = 1,
                 ["Visibility"] = 3,
+            },
+            ["UIBarProgressDirection"] = {
+                ["BottomToTop"] = 2,
+                ["LeftToRight"] = 0,
+                ["RightToLeft"] = 1,
+                ["TopToBottom"] = 3,
+            },
+            ["UIProgressType"] = {
+                ["Bar"] = 0,
+                ["Ring"] = 1,
+            },
+            ["UIRowProgressDirection"] = {
+                ["Clockwise"] = 0,
+                ["CounterClockwise"] = 1,
             },
             ["UIScollDir"] = {
                 ["Both"] = 2,

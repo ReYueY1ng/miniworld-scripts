@@ -1,29 +1,29 @@
 ﻿-- chunkname: @F:/minichina/AssetRuntime/CommonResource/Assets/../Script/luascript/ugc/framework/api/DevApiCfg.lua
 
 DevApiMType = {
-	Mod = 9,
-	BoardCast = 8,
-	HostAndClient = 7,
 	ReportHost = 6,
 	ClientData = 5,
 	SyncPack = 4,
 	Sync = 3,
 	NoBlock = 2,
 	Block = 1,
-	Normal = 0
+	Normal = 0,
+	Mod = 9,
+	BoardCast = 8,
+	HostAndClient = 7
 }
 DevApiRType = {
-	ResetCompareParam = 6,
 	CompareParam = 5,
 	TimeLimit = 4,
 	WhiteList = 3,
 	Uin_TimeLimit = 2,
-	ResendMsg = 7
+	ResendMsg = 7,
+	ResetCompareParam = 6
 }
 DevApiEnvType = {
-	Client = 2,
 	Host = 1,
-	Motion = 3
+	Motion = 3,
+	Client = 2
 }
 DevApiCfg = {
 	gameObject = {
@@ -887,6 +887,10 @@ DevApiCfg = {
 				{
 					"SetBeaconMargin",
 					DevApiMType.SyncPack
+				},
+				{
+					"SetBeaconMapType",
+					DevApiMType.SyncPack
 				}
 			},
 			dismethods = {
@@ -1150,13 +1154,6 @@ DevApiCfg = {
 				},
 				{
 					"HasHandheldGun",
-					DevApiMType.Normal,
-					{
-						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
-					}
-				},
-				{
-					"GunGetMagazine",
 					DevApiMType.Normal,
 					{
 						[DevApiRType.WhiteList] = "LuaApi3_InternalApi"
@@ -1784,7 +1781,8 @@ DevApiCfg = {
 				GameObject = {},
 				Buff = {},
 				KvMap = {},
-				Timeline = {}
+				Timeline = {},
+				DisplayBoard = {}
 			},
 			methods = {
 				{
@@ -1815,40 +1813,106 @@ DevApiCfg = {
 				"ReleaseKeptChunk",
 				"ReleaseAllKeptChunks"
 			}
+		},
+		DisplayBoard = {
+			ix = 36,
+			methods = {
+				{
+					"SetText",
+					DevApiMType.SyncPack
+				},
+				{
+					"SetImage",
+					DevApiMType.SyncPack
+				},
+				{
+					"GetImage",
+					DevApiMType.ClientData
+				},
+				{
+					"SetNumberAttr",
+					DevApiMType.SyncPack
+				},
+				{
+					"GetNumberAttr",
+					DevApiMType.ClientData
+				},
+				{
+					"SetColor",
+					DevApiMType.SyncPack
+				},
+				{
+					"GetColor",
+					DevApiMType.ClientData
+				},
+				{
+					"GetText",
+					DevApiMType.ClientData
+				},
+				{
+					"SmoothChangeAttr",
+					DevApiMType.SyncPack
+				},
+				{
+					"SetVisible",
+					DevApiMType.SyncPack
+				},
+				{
+					"ReplaceByCfg",
+					DevApiMType.SyncPack
+				},
+				{
+					"IsVisible",
+					DevApiMType.ClientData
+				},
+				{
+					"GetType",
+					DevApiMType.ClientData
+				},
+				{
+					"GetInterface",
+					DevApiMType.ClientData
+				},
+				{
+					"RefreshComponent",
+					DevApiMType.BoardCast
+				}
+			},
+			dismethods = {}
 		}
 	},
 	ScriptFenvG = {
+		unpack = true,
+		rawequal = true,
+		math = true,
+		rawget = true,
+		copy_table = true,
+		getServerTime = true,
+		setmetatable = true,
+		MODATTRIB_TYPE = true,
+		PLAYERATTR = true,
+		GRAPHICS = true,
+		next = true,
+		type = true,
+		LinearTransformation = true,
+		table = true,
+		ABSOLUTECAMPTYPE = true,
+		coroutine = true,
+		_VERSION = true,
+		ITEMATTR = true,
+		string = true,
 		VIEWPORTTYPE = true,
 		HURTTYPE = true,
-		PLAYERATTR = true,
+		assert = true,
+		CREATUREATTR = true,
+		BACKPACK_TYPE = true,
+		GameActorType = true,
 		xpcall = true,
 		pcall = true,
 		error = true,
 		tostring = true,
 		tonumber = true,
-		select = true,
-		unpack = true,
-		rawequal = true,
-		MODATTRIB_TYPE = true,
-		rawget = true,
-		GameActorType = true,
-		BACKPACK_TYPE = true,
-		setmetatable = true,
-		CREATUREATTR = true,
-		getServerTime = true,
-		copy_table = true,
-		next = true,
-		type = true,
-		math = true,
-		table = true,
-		GRAPHICS = true,
-		ABSOLUTECAMPTYPE = true,
-		coroutine = true,
-		_VERSION = true,
-		string = true,
-		LinearTransformation = true,
-		ITEMATTR = true,
-		assert = true
+		select = true
 	}
 }
 DevApiCfg.devServices = {
@@ -2081,7 +2145,34 @@ DevApiCfg.devServices = {
 					"GetProgressBarValue",
 					"SetLoaderModelAct",
 					"GetElementAttrValue",
-					"SetBeaconBand"
+					"SetBeaconBand",
+					"SetTexture",
+					"SetSize",
+					"SetFontSize",
+					"SetColor",
+					"RotateElement",
+					"SetAlpha",
+					"SetPosition",
+					"SetState",
+					"ShowElement",
+					"HideElement",
+					"StopAnim",
+					"SetLoaderModel",
+					"SetLoaderModelScale",
+					"SetLoaderModelDir",
+					"TurnSliderToPos",
+					"SetSliderDir",
+					"SetSliderBarImg",
+					"SetRelationPosition",
+					"SetRelationSize",
+					"CreateElement",
+					"CloneElement",
+					"ChangeParent",
+					"SetSpineAnimID",
+					"SetProgressBarResId",
+					"SetProgressBarValue",
+					"SmoothIncreaseProgress",
+					"DeleteElement"
 				}
 			},
 			World = {
@@ -2389,6 +2480,14 @@ DevApiCfg.devServices = {
 					"Resume",
 					"SkipForPlayer",
 					"GetDisplayName"
+				}
+			},
+			DisplayBoard = {
+				methods = {
+					"ReplaceByCfg",
+					"ReplaceByCfgForPlayer",
+					"SetVisible",
+					"IsVisible"
 				}
 			}
 		},
@@ -2699,7 +2798,8 @@ DevApiCfg.devServices = {
 			"SetBeaconClampType",
 			"SetBeaconRadius",
 			"SetUrlIcon",
-			"SetBeaconMargin"
+			"SetBeaconMargin",
+			"SetProgressBarData"
 		}
 	},
 	Chat = {
@@ -2931,7 +3031,8 @@ DevApiCfg.devServices = {
 			"RotateMainModel",
 			"GetBlockAtlasInfo",
 			"EnterGunState",
-			"LevelGunState"
+			"LevelGunState",
+			"KickPlayer"
 		}
 	},
 	Buff = {
@@ -3172,6 +3273,30 @@ DevApiCfg.devServices = {
 			"SkipForPlayer",
 			"GetPlayerState",
 			"IsAllFinished"
+		}
+	},
+	DisplayBoard = {
+		name = "显示板模块",
+		methods = {
+			"SetText",
+			"SetImage",
+			"GetImage",
+			"SetNumberAttr",
+			"GetNumberAttr",
+			"SetColor",
+			"GetColor",
+			"GetText",
+			"SmoothChangeAttr",
+			"SetVisible",
+			"GenImgBoardCfg",
+			"GenTxtBoardCfg",
+			"GenProgressBoardCfg",
+			"GenCustomUIBoardCfg",
+			"CreateByPos",
+			"ReplaceByCfg",
+			"IsVisible",
+			"GetType",
+			"GetInterface"
 		}
 	}
 }
